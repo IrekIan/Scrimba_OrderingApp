@@ -123,6 +123,7 @@ h3 {
 
 .order-btn {
   /* display: none; */
+  cursor: pointer;
   width: 300px;
   height: 40px;
   border: none;

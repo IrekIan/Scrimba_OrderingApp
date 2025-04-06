@@ -1,13 +1,13 @@
 import menuArray from "./data.js";
 
-// console.log(menuArray);
 // ZMIENNE
 let menuDiv = document.getElementById(`menu-items`);
 let summarySection = document.getElementById(`order-summary-section`);
-// let orderBtn = document.querySelector(`.order-btn`);
-// let orderSummaryPrice = document.querySelector(`.order-summary`);
-// console.log(orderSummaryPrice);
+
 const lastSection = document.getElementById(`order-btn-summary-sction`);
+let priceSummary = document.getElementById(`total-price`);
+
+let priceSummaryNumber = 0;
 
 // POBIERANIE ELEMENTOW Z BAZY I RENDEROWANIE ICH
 menuArray.forEach(function (menuItem) {
@@ -22,71 +22,93 @@ menuArray.forEach(function (menuItem) {
               </li>
               <li class="item-price">${menuItem.price}</li>
             </ul>
-          </div>
-          <div class="add-item">
+            </div>
+            <div class="add-item">
             <i  id="${menuItem.id}" class="fa-solid fa-cart-plus fa-2xl"></i>
-          </div>
-        </div>
-              <hr class="gray-divider" />`;
-  // console.log(menuItem);
+            </div>
+            </div>
+            <hr class="gray-divider" />`;
 });
 
 const shopBtns = document.querySelectorAll(`.fa-cart-plus`);
 console.log(shopBtns);
 
 // POBIERANIE ID ELEMENTU
-shopBtns.forEach((btn) =>
+let orderId = 0;
+shopBtns.forEach((btn, index) =>
   btn.addEventListener(`click`, function (event) {
     lastSection.classList.remove("display");
 
     let clickedItemId = event.target.id;
-    console.log(clickedItemId);
 
     const clickedItem = menuArray.find(
       (item) => item.id === Number(clickedItemId)
     );
-    // console.log(clickedItem);
+
+    orderId++;
 
     summarySection.innerHTML += `
-  <div class="order-item">
+  <div class="order-item" data-order-id="${orderId}">
         <div>
           <p>${clickedItem.name}</p>
-          <button id="remove-btn" ${clickedItem.id}>remove</button>
+          <button class="remove-btn" data-order-id="${orderId}">remove</button>
         </div>
-        <div>${clickedItem.price}</div>
+        <div class="summary-item-price" data-order-id="${orderId}">${clickedItem.price}</div>
       </div>
 
 
       `;
+    // SUMOWANIE CEN
+    priceSummaryNumber += clickedItem.price;
+    priceSummary.innerText = priceSummaryNumber;
   })
 );
+// USUWANIE ELEMENTÓW
 
-// const IdItem = menuArray.filter(function (clickedItem) {
-// summarySection.innerHTML += `
-// <div class="order-item">
-//       <div>
-//         <p>Pizza</p>
-//         <button>remove</button>
-//       </div>
+document.addEventListener("click", function (event) {
+  const clickedBtnId = event.target.dataset.orderId;
 
-//       <div>14$</div>
-//     </div>
-//     <div class="order-item">
-//       <div>
-//         <p>Pizza</p>
-//         <button>remove</button>
-//       </div>
+  const item = document.querySelector(
+    `.order-item[data-order-id="${clickedBtnId}"]`
+  );
 
-//       <div>14$</div>
-//     </div>
-//     <hr class="black-divider" />
-//     <div class="order-summary order-item">
-//       <div>
-//         <p>Total price:</p>
-//       </div>
-//       <div>14$</div>
-//     </div>
-//     <button class="order-btn">Complete order</button>
-//     `;
+  if (item) {
+    const priceEl = item.querySelector(".summary-item-price");
+
+    if (priceEl) {
+      const removedItemPrice = Number(priceEl.textContent);
+      priceSummaryNumber -= removedItemPrice;
+      priceSummary.innerText = priceSummaryNumber;
+    }
+
+    item.remove();
+  }
+});
+
+// document.addEventListener(`click`, function (event) {
+//   let clickedBtnId = event.target.dataset.orderId;
+
+//   const removedItemPrice = Number(
+//     document.querySelector(
+//       `.summary-item-price[data-order-id="${clickedBtnId}"]`
+//     ).textContent
+//   );
+//   priceSummaryNumber -= removedItemPrice;
+//   priceSummary.innerText = priceSummaryNumber;
+
+//   if (clickedBtnId) {
+//     document
+//       .querySelector(`.order-item[data-order-id="${clickedBtnId}"]`)
+//       .remove();
+//   }
+//   console.log(removedItemPrice);
 // });
-// console.log(IdItem);
+
+// const priceToSubtract = Number(
+//   document.querySelector(
+//     `.order-item[data-order-id="${clickedBtnId}"] .summary-item-price`
+//   ).textContent
+// );
+// console.log(priceToSubtract);
+
+// priceSummary.innerText = priceSummaryNumber - priceToSubtract;

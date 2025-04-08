@@ -38,6 +38,7 @@ let orderId = 0;
 shopBtns.forEach((btn, index) =>
   btn.addEventListener(`click`, function (event) {
     lastSection.classList.remove("display");
+    document.querySelector("h3.your-order-header").classList.remove("display");
 
     let clickedItemId = event.target.id;
 
@@ -58,6 +59,7 @@ shopBtns.forEach((btn, index) =>
 
 
       `;
+
     // SUMOWANIE CEN
     priceSummaryNumber += clickedItem.price;
     priceSummary.innerText = priceSummaryNumber;
@@ -68,12 +70,17 @@ shopBtns.forEach((btn, index) =>
 document.addEventListener("click", function (event) {
   const clickedBtnId = event.target.dataset.orderId;
 
+  // stala "item" jest to caly div który jest usuwany prez klikniecie na "remove"
   const item = document.querySelector(
     `.order-item[data-order-id="${clickedBtnId}"]`
   );
+  // console.log(item);
 
+  // if sprawdza czy item istnieje
   if (item) {
+    // priceEl jest to div z cena ktory zostal klikniety remove
     const priceEl = item.querySelector(".summary-item-price");
+    console.log(priceEl);
 
     if (priceEl) {
       const removedItemPrice = Number(priceEl.textContent);
@@ -84,31 +91,10 @@ document.addEventListener("click", function (event) {
     item.remove();
   }
 });
+// COMPLETE ORDER BTN ACTION
 
-// document.addEventListener(`click`, function (event) {
-//   let clickedBtnId = event.target.dataset.orderId;
-
-//   const removedItemPrice = Number(
-//     document.querySelector(
-//       `.summary-item-price[data-order-id="${clickedBtnId}"]`
-//     ).textContent
-//   );
-//   priceSummaryNumber -= removedItemPrice;
-//   priceSummary.innerText = priceSummaryNumber;
-
-//   if (clickedBtnId) {
-//     document
-//       .querySelector(`.order-item[data-order-id="${clickedBtnId}"]`)
-//       .remove();
-//   }
-//   console.log(removedItemPrice);
-// });
-
-// const priceToSubtract = Number(
-//   document.querySelector(
-//     `.order-item[data-order-id="${clickedBtnId}"] .summary-item-price`
-//   ).textContent
-// );
-// console.log(priceToSubtract);
-
-// priceSummary.innerText = priceSummaryNumber - priceToSubtract;
+if (document.querySelector(".order-btn")) {
+  document.querySelector(".order-btn").addEventListener("click", function () {
+    document.querySelector(".transaction-window").classList.remove("display");
+  });
+}

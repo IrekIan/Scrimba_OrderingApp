@@ -12,9 +12,40 @@
       rel="stylesheet"
     />
     <!-- CSS  -->
-    <link rel="stylesheet" href="/style/style.css" />
+    <link rel="stylesheet" href="/Scrimba_OrderingApp/style/style.css" />
   </head>
   <body>
+    <section class="transaction-window display">
+      <h3>Enter card details</h3>
+      <input
+        type="text"
+        name="name"
+        maxlength="20"
+        pattern="[A-Za-z]{1,20}"
+        title="Name"
+        placeholder="Name"
+        required
+      />
+      <input
+        type="tel"
+        name="phone"
+        maxlength="9"
+        pattern="[0-9]{9}"
+        title="Phone number"
+        placeholder="Phone sumber"
+        required
+      />
+      <input
+        type="text"
+        name="card"
+        maxlength="16"
+        pattern="[0-9]{16}"
+        title="Credit card details"
+        placeholder="Credit card number"
+        required
+      />
+      <button>Pay</button>
+    </section>
     <section id="main">
       <section id="header-img">
         <img
@@ -40,7 +71,7 @@
         </div> -->
       </section>
       <section id="order-summary-section">
-        <h3>Your Order</h3>
+        <h3 class="your-order-header display">Your Order</h3>
         <!-- <div class="order-item">
           <div>
             <p>Pizza</p>
